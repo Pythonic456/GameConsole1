@@ -41,6 +41,8 @@ class console:
                 if self.leds[i][b][state] != state:
                     self.set_led(i,b,state)
     def after(self, ms, command):
-        self.__root.after(ms, command)
+        return self.__root.after(ms, command)
+    def after_cancel(self, afterif):
+        return self.__root.after_cancel(afterif)
     def start_loop(self):
         self.__root.mainloop()
