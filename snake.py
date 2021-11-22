@@ -72,16 +72,21 @@ def process():
 
 def direction_up(ev=None):
     global direction
+    if direction == 'down': return
     direction = 'up'
 def direction_down(ev=None):
     global direction
+    if direction == 'up': return
     direction = 'down'
 def direction_right(ev=None):
     global direction
+    if direction == 'left': return
     direction = 'right'
 def direction_left(ev=None):
     global direction
+    if direction == 'right': return
     direction = 'left'
+
 
 def increase_length(ev=None):
     global length

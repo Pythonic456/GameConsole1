@@ -7,7 +7,7 @@
 # - Leader board
 # - Rotate cw and ccw
 
-import random
+import random, sys
 import console
 
 
@@ -58,6 +58,8 @@ class Quadris(console.console):
         self.shapecoords = None # [(x1, y1), (x2, y2), (x3, y3), (x4, y4)]
         # Board
         self.board = [[0] * self.width for i in range(self.height)]
+        # Score
+        self.score = 0
         
         self.after_dropid = 'None'
         
@@ -88,7 +90,8 @@ class Quadris(console.console):
         # Will it fit
         for x, y in self.shapecoords:
             if self.board[y][x]:
-                print("Game over")
+                #print("Game over, score:", self.score)
+                self.game_over(0)
                 return
         # Draw shape
         self.leds_on(*self.shapecoords)
@@ -119,7 +122,8 @@ class Quadris(console.console):
         # If partially off-screen (any -ve coords), game-over
         if any(y < 0 for x, y in self.shapecoords):
             # Do not remove the partial shape - looks better if we keep it
-            print("Game over (offscreen shape)")
+            #print("Game over (offscreen shape)")
+            self.game_over(1)
             return
         
         self.stickit()
@@ -158,6 +162,7 @@ class Quadris(console.console):
                 # print('Redraw line {y}:', self.board[y])
                 self.leds_on(*((x, y) for x in range(self.width) if self.board[y][x]))
             print()
+            self.score += 1
         
         self.newshape()
 
@@ -225,6 +230,16 @@ class Quadris(console.console):
         self.shaperot = newshaperot
         self.shapecoords = [(x + xpos, y + ypos) for x, y in rots[self.shaperot]]
         self.leds_on(*self.shapecoords)
+    def game_over(self, event):
+        if event == 0:
+            #Normal game over, the player ran out of space
+            print('Game over, score:', self.score)
+        elif event == 1:
+            #Off-screen shape, the player ran out of space
+            print('Game over, score:', self.score)
+        elif event == -1:
+            print('Something weird happened')
+        sys.exit()
 
 
 def main():

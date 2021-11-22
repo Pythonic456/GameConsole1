@@ -8,15 +8,15 @@ console = console.console(led_width=100, led_height=100)
 
 
 os.system('ffmpeg -hide_banner -loglevel error -i video.mp4 -vf scale=100:100 output.mp4')
-os.system('rm -r /tmp/frames/;mkdir /tmp/frames/')
-os.system('ffmpeg -hide_banner -loglevel error -i output.mp4 /tmp/frames/frame%04d.jpg;rm output.mp4')
+os.system('rm -r /tmp/videoplayer_frames/;mkdir /tmp/videoplayer_frames/')
+os.system('ffmpeg -hide_banner -loglevel error -i output.mp4 /tmp/videoplayer_frames/frame%04d.jpg;rm output.mp4')
 
-fr_paths = os.listdir('/tmp/frames/')
+fr_paths = os.listdir('/tmp/videoplayer_frames/')
 fr_paths.sort()
 frame_paths = []
 fr_paths.reverse()
 for path in fr_paths:
-    frame_paths.append('/tmp/frames/'+path)
+    frame_paths.append('/tmp/videoplayer_frames/'+path)
 print('Loading frames...',end='')
 frames = {}
 for frame_path in frame_paths:
@@ -44,6 +44,8 @@ def process(force=0):
     console.after(ms_per_frame, process)
 process(force=1)
 
+print('Button 2: Play')
+print('Button 3: Pause')
 def button_0(ev=None):
     pass#process(force=1)
 def button_1(ev=None):
